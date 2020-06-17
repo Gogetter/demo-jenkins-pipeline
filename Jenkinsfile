@@ -20,8 +20,8 @@ pipeline {
             sh('./gradlew dependencyCheckAnalyze')
                     }
                 }
-            }
-        }
+
+        }}
 
     stage('Staging') {
                   steps {
