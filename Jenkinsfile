@@ -26,8 +26,7 @@ pipeline {
 
     stage('Staging') {
       steps {
-        sh './gradlew bootRun'
-        sh 'pid=$(docker exec jenkins_jenkins-blueocean_1 ps -o pid,args | grep bootRun); kill -TERM $pid || kill -KILL $pid'
+        sh './gradlew bootRun && pid=$(docker exec jenkins_jenkins-blueocean_1 ps -o pid,args | grep bootRun); kill -TERM $pid || kill -KILL $pid'
       }
     }
 
