@@ -26,9 +26,7 @@ pipeline {
 
     stage('Staging') {
                   steps {
-                    withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                                  sh('nohup ./gradlew bootRun &')
-                            }
+                    sh('./gradlew bootRun')
                     sh("pid=\$(lsof -i:8095 -t); kill -TERM \$pid || kill -KILL \$pid")
             }
         }
