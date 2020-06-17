@@ -25,14 +25,16 @@ pipeline {
     }
 
     stage('Staging') {
-                  steps {
-                    withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                                  sh('nohup ./gradlew bootRun &')
-                            }
-                    sh("pid=\$(lsof -i:8095 -t); kill -TERM \$pid || kill -KILL \$pid")
-            }
+      steps {
+        withEnv(overrides: ['JENKINS_NODE_COOKIE=dontkill']) {
+          sh 'nohup ./gradlew bootRun &'
         }
+
+        sh 'pid=$(lsof -i:8095 -t); kill -TERM $pid || kill -KILL $pid'
+      }
     }
+
+  }
   tools {
     gradle 'gradle6.5'
   }
