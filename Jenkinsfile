@@ -26,8 +26,10 @@ pipeline {
 
     stage('Staging') {
                   steps {
-                    sh('./gradlew bootRun')
-                    sh("pid=\$(lsof -i:8095 -t); kill -TERM \$pid || kill -KILL \$pid")
+                    withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
+                                  sh('nohup ./gradlew bootRun &')
+                            }
+                    sh("pid=\$(docker exec jenkins_jenkins-blueocean_1 ps -o pid,args | grep bootRun); kill -TERM \$pid || kill -KILL \$pid")
             }
         }
     }
