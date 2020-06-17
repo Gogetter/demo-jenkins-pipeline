@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('clone repo') {
+    stage('git checkout') {
       steps {
-        git(url: 'https: //github.com/Gogetter/demo-jenkins-pipeline', branch: 'master', changelog: true, poll: true)
+        git(url: 'https://github.com/Gogetter/demo-jenkins-pipeline', branch: 'master', changelog: true, poll: true)
       }
     }
 
@@ -28,7 +28,7 @@ pipeline {
       steps {
         sh 'pid=$(lsof -i:8095 -t); kill -TERM $pid || kill -KILL $pid'
         withEnv(overrides: ['JENKINS_NODE_COOKIE=dontkill'
-                        ]) {
+                                ]) {
           sh 'nohup ./gradlew bootRun &'
         }
 
