@@ -1,0 +1,81 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.1.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java' apply(true)
+	id 'org.owasp.dependencycheck' version '5.3.2.1' apply(true)
+	id 'checkstyle'
+}
+
+group = 'dev.etimbuk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.hsqldb:hsqldb'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+bootJar {
+	archiveBaseName.set('demo-jenkins-pipeline')
+	archiveVersion.set('0.1.0')
+}
+
+checkstyle {
+	maxWarnings = 0
+	toolVersion = "8.25"
+	configDirectory.set(file("$rootDir/config/checkstyle"))
+}
+
+tasks.withType(Checkstyle) {
+	reports {
+		xml.enabled false
+		html.enabled true
+	}
+}
+
+// OWASP Dependency Check settings
+dependencyCheck {
+
+	// let's not ignore errors even though builds in Jenkins may be stable
+	failOnError = true
+
+	// OWASP Dependency Check plugin for Jenkins needs an XML report,
+	// but humans may also need an HTML one
+	format = 'ALL'
+
+	// set up a quality gate for vulnerabilities with high severity level:
+	//   let's consider that a vulnerability has a high severity level if its CVSS score is higher than 7
+	//   the build is going to fail if vulnerabilities with high severity level found
+	failBuildOnCVSS = 7
+
+	// specify a list of known issues which contain:
+	//   false-positives
+	//   confirmed vulnerabilities which are not fixed yet, but we have a ticket for that
+	suppressionFile = 'dependency-check-known-issues.xml'
+
+	analyzers {
+		// Disable scanning of .NET related binaries
+		assemblyEnabled = false
+	}
+}
+
