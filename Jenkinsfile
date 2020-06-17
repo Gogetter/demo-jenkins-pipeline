@@ -26,7 +26,7 @@ pipeline {
 
     stage('Staging') {
       steps {
-        echo 'Deploy to Staging'
+        echo 'Deploy to Staging. Ideally we should deploy to a staging server'
       }
     }
 
