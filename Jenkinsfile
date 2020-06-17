@@ -20,9 +20,14 @@ pipeline {
             sh './gradlew dependencyCheckAnalyze'
           }
         }
-
       }
     }
+
+    stage('deploy: run application') {
+                  steps {
+                    sh './gradlew bootRun'
+                  }
+                }
 
   }
   tools {
