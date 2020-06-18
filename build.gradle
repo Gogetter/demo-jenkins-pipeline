@@ -10,8 +10,8 @@ plugins {
 group = 'dev.etimbuk'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
 	compileOnly {
@@ -46,7 +46,7 @@ bootJar {
 // Documentation found here -> https://bmuschko.github.io/gradle-docker-plugin/#usage_3
 docker {
 	springBootApplication {
-		baseImage = 'adoptopenjdk/openjdk11'
+		baseImage = 'adoptopenjdk/openjdk8'
 		ports = [8080]
 		maintainer = 'Etimbuk U'
 		images = ["eudofia/demo-jenkins-pipeline:${project.version}"]
