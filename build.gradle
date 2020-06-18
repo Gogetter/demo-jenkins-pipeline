@@ -42,6 +42,8 @@ bootJar {
 
 bootBuildImage {
 	imageName = "eudofia/demo-jenkins-pipeline:${project.version}"
+	verboseLogging = true
+	cleanCache = true
 }
 
 checkstyle {
