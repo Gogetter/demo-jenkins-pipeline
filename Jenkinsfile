@@ -3,35 +3,50 @@ pipeline {
   stages {
     stage('git checkout') {
       steps {
-        git(url: 'https://github.com/Gogetter/demo-jenkins-pipeline', branch: 'master', changelog: true, poll: true)
-      }
-    }
-
-    stage('build application') {
-      parallel {
-        stage('gradle build (clean, test, check)') {
-          steps {
-            sh './gradlew clean build'
-          }
+        git(url: 'https: //github.com/Gogetter/demo-jenkins-pipeline', branch: 'master', changelog: true, poll: true)
+            }
         }
 
-        stage('security checks') {
+    stage('ready application') {
+      parallel {
+        stage('compile') {
+          steps {
+            sh './gradlew classes'
+                    }
+                }
+
+        stage('test') {
+                  steps {
+                    sh './gradlew test'
+                    }
+                }
+            }
+        }
+
+    stage('run checks') {
+        parallel {
+            stage('checkstyle') {
+                steps {
+                    sh './gradlew check'
+                    }
+                }
+
+            stage('security checks') {
           steps {
             sh './gradlew dependencyCheckAnalyze'
-          }
+                    }
+                }
+            }
         }
-
-      }
-    }
 
     stage('Staging') {
       steps {
-        echo 'Deploy to Staging. Ideally we should deploy to a staging server'
-      }
+        echo "Build Docker image"
+        sh './gradlew bootBuildImage'
+            }
+        }
     }
-
-  }
   tools {
     gradle 'gradle6.5'
-  }
+    }
 }
