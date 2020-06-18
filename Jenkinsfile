@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('git checkout') {
       steps {
-        git(url: 'https: //github.com/Gogetter/demo-jenkins-pipeline', branch: 'master', changelog: true, poll: true)
+        git(url: 'https://github.com/Gogetter/demo-jenkins-pipeline', branch: 'master', changelog: true, poll: true)
       }
     }
 
