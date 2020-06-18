@@ -41,6 +41,7 @@ bootJar {
 }
 
 bootBuildImage {
+	environment = ["BP_JVM_VERSION" : "11.0.7"]
 	imageName = "eudofia/demo-jenkins-pipeline:${project.version}"
 	verboseLogging = true
 	cleanCache = true
