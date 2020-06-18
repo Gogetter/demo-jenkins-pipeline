@@ -40,6 +40,10 @@ bootJar {
 	archiveVersion.set('0.1.0')
 }
 
+bootBuildImage {
+	imageName = "eudofia/demo-jenkins-pipeline:${project.version}"
+}
+
 checkstyle {
 	maxWarnings = 0
 	toolVersion = "8.25"
